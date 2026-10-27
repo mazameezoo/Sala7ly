@@ -45,3 +45,8 @@ example
 .env
 .env*.local
 .claude/
+
+node_modules/
+.env
+.env*.local
+.claude/

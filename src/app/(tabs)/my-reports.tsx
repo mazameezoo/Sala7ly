@@ -1,5 +1,7 @@
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
+import { View, ScrollView, Pressable, StyleSheet } from 'react-native';
+import Text from '../../components/AppText';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { colors, status as statusColors, spacing, radius, font } from '../../theme';
 import ProgressRing from '../../components/ProgressRing';
 import StatusPill from '../../components/StatusPill';
@@ -14,6 +16,7 @@ const FILTERS: { key: StatusFilter; label: string }[] = [
 
 export default function MyReportsScreen() {
   const vm = useMyReports();
+  const router = useRouter();
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
@@ -64,14 +67,18 @@ export default function MyReportsScreen() {
         </View>
       ) : (
         vm.reports.map((r) => (
-          <View key={r.id} style={styles.card}>
+          <Pressable
+            key={r.id}
+            style={styles.card}
+            onPress={() => router.push({ pathname: '/report/[id]', params: { id: r.id } })}
+          >
             <View style={styles.flex}>
               <Text style={styles.cardTitle}>{r.category}</Text>
               <Text style={styles.cardSub}>{r.location} · {r.createdAt}</Text>
               <Text style={styles.cardSub}>{r.verifications} verifications</Text>
             </View>
             <StatusPill status={r.status} />
-          </View>
+          </Pressable>
         ))
       )}
     </ScrollView>
